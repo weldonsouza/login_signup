@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loginsignup/src/utils/custom/custom_circle_button.dart';
+import 'package:loginsignup/src/utils/custom/custom_text_field.dart';
 import 'package:loginsignup/src/utils/globals.dart';
 
+import 'resetPassword.dart';
 import 'sign_up.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,7 +16,13 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
-  bool isObscureText = false;
+  bool _isObscureText = false;
+
+  FocusNode _emailFocus = FocusNode();
+  FocusNode _passwordFocus = FocusNode();
+
+  final _email = TextEditingController();
+  final _password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,28 +38,64 @@ class _SignInState extends State<SignIn> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text('Log In', style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold)),
-                    GestureDetector(
-                      onTap: (){
-                        Navigator.push(context, CupertinoPageRoute(builder: (context) => SignUp()));
-                      },
-                      child: Text('Sign Up', style: TextStyle(fontSize: 16, color: Colors.white70))),
-                  ],
-                ),
-                SizedBox(height: 5),
-                _textFormField(labelText: 'Email'),
-                _textFormField(labelText: 'Password', suffixIcon: true),
-                SizedBox(height: 15),
-                CustomCicleButton(label: 'Login', textColor: Colors.white, backgroundColor: Colors.deepOrangeAccent,
-                width: mediaQuery(context, 1), height: 50, borderRadius: 8, fontSizeText: 16),
-                SizedBox(height: 10),
-                CustomCicleButton(label: 'Login with Facebook', textColor: Colors.white, backgroundColor: Colors.white24,
-                  width: mediaQuery(context, 1), height: 50, borderRadius: 8, fontSizeText: 16),
-                //SizedBox(height: 10),
+                SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Text('Log In', style: TextStyle(fontSize: 22, color: Colors.white, fontWeight: FontWeight.bold)),
+                          GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, CupertinoPageRoute(builder: (context) => SignUp()));
+                              },
+                              child: Text('Sign Up', style: TextStyle(fontSize: 16, color: Colors.white70))),
+                        ],
+                      ),
+                      SizedBox(height: 5),
+                      CustomTextField(
+                        labelText: 'Email',
+                        controller: _email,
+                        textInputAction: TextInputAction.next,
+                        focusNode: _emailFocus,
+                        focusScope: _passwordFocus,
+                      ),
+                      CustomTextField(
+                        labelText: 'Password',
+                        controller: _password,
+                        textInputAction: TextInputAction.done,
+                        focusNode: _passwordFocus,
+                        suffixIcon1: Icons.visibility,
+                        suffixIcon2: Icons.visibility_off,
+                      ),
+                      GestureDetector(
+                        onTap: (){
+                          //Navigator.push(context, CupertinoPageRoute(builder: (context) => ResetPassword()));
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return ResetPassword();
+                            },
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text('Reset', style: TextStyle(color: Colors.white70, fontSize: 14)),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      CustomCicleButton(label: 'Login', textColor: Colors.white, backgroundColor: Colors.deepOrangeAccent,
+                          width: mediaQuery(context, 1), height: 50, borderRadius: 8, fontSizeText: 16),
+                      SizedBox(height: 10),
+                      CustomCicleButton(label: 'Login with Facebook', textColor: Colors.white, backgroundColor: Colors.white24,
+                          width: mediaQuery(context, 1), height: 50, borderRadius: 8, fontSizeText: 16),
+                      //SizedBox(height: 10),
+                    ],
+                  ),
+                )
               ],
             ),
           )),
@@ -75,7 +119,8 @@ class _SignInState extends State<SignIn> {
           maxLength: maxLength,
           focusNode: focusNode,
           onChanged: onChanged,
-          textCapitalization: textCapitalization,
+          //textCapitalization: textCapitalization,
+          obscureText: _isObscureText,
           inputFormatters: [BlacklistingTextInputFormatter(RegExp(r'[.,]'))],
           //onFieldSubmitted: (v) {},
           onEditingComplete: () {
@@ -88,12 +133,12 @@ class _SignInState extends State<SignIn> {
             labelText: labelText,
             suffixIcon: suffixIcon == null ? null : IconButton(
                 icon: Icon(
-                  isObscureText ? Icons.visibility : Icons.visibility_off,
-                  color: Colors.white,
+                  _isObscureText ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.white70,
                 ),
                 onPressed: (){
                   setState(() {
-                    isObscureText = !isObscureText;
+                    _isObscureText = !_isObscureText;
                   });
                 }),
             labelStyle: TextStyle(color: Colors.white),
