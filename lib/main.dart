@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'src/sign_in.dart';
+import 'src/view/sign_in.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
     SystemChrome.setPreferredOrientations ([
       DeviceOrientation.portraitUp
     ]);
+
+    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
 
     return MaterialApp(
       title: 'Flutter Demo',
