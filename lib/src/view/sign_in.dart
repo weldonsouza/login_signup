@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:loginsignup/src/components/custom_circle_button.dart';
 import 'package:loginsignup/src/components/custom_text_field.dart';
 import 'package:loginsignup/src/utils/globals.dart';
